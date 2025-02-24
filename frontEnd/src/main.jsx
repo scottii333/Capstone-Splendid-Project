@@ -9,6 +9,12 @@ import { Products } from "./Pages/Products.jsx";
 import { Error } from "./Components/Error.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AdminAuth } from "./Admin/AdminAuth.jsx";
+import { AdminDashBoard } from "./Admin/AdminDashBoard.jsx";
+import { AdminIndex } from "./Admin/AdminIndex.jsx";
+import { AdminProducts } from "./Admin/AdminProducts.jsx";
+import { AdminOrders } from "./Admin/AdminOrders.jsx";
+import { AdminShipping } from "./Admin/AdminShipping.jsx";
+import { AdminMessages } from "./Admin/AdminMessages.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +33,30 @@ const router = createBrowserRouter([
     path: "/Admin-Authentication-Splendid",
     element: <AdminAuth />,
     errorElement: <Error />,
+  },
+  {
+    path: "/Admin-Dashboard-Splendid",
+    element: <AdminDashBoard />,
+    errorElement: <Error />,
+    children: [
+      {
+        index: true,
+        element: <AdminIndex />,
+      },
+      { path: "Products", element: <AdminProducts /> },
+      {
+        path: "Orders",
+        element: <AdminOrders />,
+      },
+      {
+        path: "Shipping",
+        element: <AdminShipping />,
+      },
+      {
+        path: "Messages",
+        element: <AdminMessages />,
+      },
+    ],
   },
 ]);
 
