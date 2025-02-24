@@ -8,6 +8,7 @@ import { About } from "./Pages/About.jsx";
 import { Products } from "./Pages/Products.jsx";
 import { Error } from "./Components/Error.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AdminAuth } from "./Admin/AdminAuth.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
       { path: "About-Splendid", element: <About /> },
       { path: "Contact-Splendid", element: <Contact /> },
     ],
+  },
+  {
+    path: "/Admin-Authentication-Splendid",
+    element: <AdminAuth />,
+    errorElement: <Error />,
   },
 ]);
 
