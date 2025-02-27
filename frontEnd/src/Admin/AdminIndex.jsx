@@ -1,9 +1,22 @@
 import accLogo from "../Images/accLogo.png";
 import notifLogo from "../Images/notifLogo.png";
+import notifXLogo from "../Images/closeBtn.png";
 import hoodieProd from "../Images/HoodieProd.png";
 import { SalesPieChart } from "./SalesPieChart";
+import { useState } from "react";
 
 export const AdminIndex = () => {
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isAccOpen, setIsAccOpen] = useState(false);
+
+  const toggleAccModal = () => {
+    setIsAccOpen((prev) => !prev); // Toggle modal state
+  };
+
+  const toggleNotifModal = () => {
+    setIsNotifOpen((prev) => !prev); // Toggle modal state
+  };
+
   return (
     <div className="flex flex-col gap-2 p-[1rem]  ">
       <div className="flex justify-between w-full">
@@ -11,8 +24,48 @@ export const AdminIndex = () => {
 
         {/* div for notif and acc */}
         <div className="flex gap-[1rem]">
-          <img src={notifLogo} className="w-[2rem] h-[2rem]" />
-          <img src={accLogo} className="w-[2rem] h-[2rem]" />
+          <img
+            src={isNotifOpen ? notifXLogo : notifLogo}
+            className="w-[2rem] h-[2rem]"
+            onClick={toggleNotifModal}
+          />
+          <div className="relative">
+            {/* Notification Modal */}
+            {isNotifOpen && (
+              <div className="absolute  top-[3rem] right-0 bg-white border shadow-lg rounded-lg w-[15rem] p-4 z-10">
+                <h3 className="font-semibold text-lg mb-2">Notifications 🔔</h3>
+                <ul className="flex flex-col gap-2 max-h-[10rem] overflow-y-auto">
+                  <li className="text-sm border-b pb-1">
+                    Order #0200119 has been shipped.
+                  </li>
+                  <li className="text-sm border-b pb-1">
+                    Refund processed for #0200129.
+                  </li>
+                  <li className="text-sm border-b pb-1">
+                    New order placed: #0200150.
+                  </li>
+                  <li className="text-sm border-b pb-1">
+                    Promotion starts tomorrow!
+                  </li>
+                  <li className="text-sm">System maintenance on 03/05/2025.</li>
+                </ul>
+              </div>
+            )}
+          </div>
+          <img
+            src={isAccOpen ? notifXLogo : accLogo}
+            className="w-[2rem] h-[2rem]"
+            onClick={toggleAccModal}
+          />
+
+          <div className="relative">
+            {/* Account Modal */}
+            {isAccOpen && (
+              <div className="absolute  top-[3rem] right-0 bg-white border shadow-lg rounded-lg w-[15rem] h-[10rem] p-4 z-10 flex justify-center items-center ">
+                LogOut
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

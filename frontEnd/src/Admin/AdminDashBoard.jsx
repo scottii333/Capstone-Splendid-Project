@@ -66,7 +66,7 @@ export const AdminDashBoard = () => {
       </nav>
 
       {/* Mobile nav */}
-      <nav className="bg-white border flex justify-between items-center h-16 px-4 md:px-8 relative w-full sm:hidden ">
+      <nav className="bg-white/30 backdrop-blur-sm  sticky top-1  flex justify-between items-center h-16 px-4 md:px-8  w-full sm:hidden rounded-lg ">
         {/* Logo */}
         <img src={brandLogo} className="w-[5rem] h-[2rem] " />
 
@@ -96,7 +96,7 @@ export const AdminDashBoard = () => {
 
         {/* Dropdown Menu (visible when hamburger is toggled on small screens) */}
         {isOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center space-y-4 py-4 md:hidden">
+          <div className="absolute top-16 left-0 w-full bg-white/90 backdrop-blur-3xl shadow-md flex flex-col items-center space-y-4 py-4 md:hidden">
             <ul className="flex flex-col gap-[2rem] mt-[1rem] w-full text-center">
               <li>
                 <Link
