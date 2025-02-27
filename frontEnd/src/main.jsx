@@ -15,6 +15,9 @@ import { AdminProducts } from "./Admin/AdminProducts.jsx";
 import { AdminOrders } from "./Admin/AdminOrders.jsx";
 import { AdminShipping } from "./Admin/AdminShipping.jsx";
 import { AdminMessages } from "./Admin/AdminMessages.jsx";
+import { AdminNewProd } from "./Admin/AdminNewProd.jsx";
+import { AdminViewProd } from "./Admin/AdminViewProd.jsx";
+import { AdminPrevProd } from "./Admin/AdminPrevProd.jsx";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +46,22 @@ const router = createBrowserRouter([
         index: true,
         element: <AdminIndex />,
       },
-      { path: "Products", element: <AdminProducts /> },
+      {
+        path: "Products",
+        element: <AdminProducts />,
+        children: [
+          { index: true, element: <AdminNewProd /> },
+          { path: "New-Product", element: <AdminNewProd /> },
+          {
+            path: "Product-Preview",
+            element: <AdminPrevProd />,
+          },
+          {
+            path: "View-Products",
+            element: <AdminViewProd />,
+          },
+        ],
+      },
       {
         path: "Orders",
         element: <AdminOrders />,
