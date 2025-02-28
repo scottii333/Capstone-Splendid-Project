@@ -34,7 +34,7 @@ export const AdminNewProd = () => {
           {/* Product Category */}
           <div className="flex flex-col gap-[0.5rem] w-full lg:w-[48%]">
             <label>Product Category</label>
-            <select className="w-full max-w-full min-w-[15rem] p-[0.5rem] border rounded">
+            <select className="w-full  max-w-[100%] p-[0.5rem] border rounded ">
               <option value="" disabled>
                 Select Category
               </option>

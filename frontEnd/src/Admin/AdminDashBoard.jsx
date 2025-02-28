@@ -12,7 +12,7 @@ export const AdminDashBoard = () => {
   return (
     <div className="[background-image:linear-gradient(to_right,_#e2dab4,_#fcc190)] w-full h-auto p-[0.3rem] flex gap-[1rem] flex-col sm:flex-row sm:min-h-screen ">
       <nav className="hidden sm:block w-[20rem] h-auto bg-white rounded-lg flex-col items-center p-[1rem] ">
-        <img src={brandLogo} className="w-[10rem] h-[3rem] mt-[2rem]" />
+        <img src={brandLogo} className="w-[15rem] h-[6rem] mt-[2rem]" />
 
         <div className="w-full h-[2px] mt-[2rem] [background-image:linear-gradient(to_right,_#e2dab4,_#fcc190)] "></div>
 
@@ -68,7 +68,7 @@ export const AdminDashBoard = () => {
       {/* Mobile nav */}
       <nav className="bg-white/30 backdrop-blur-sm  sticky top-1  flex justify-between items-center h-16 px-4 md:px-8  w-full sm:hidden rounded-lg ">
         {/* Logo */}
-        <img src={brandLogo} className="w-[5rem] h-[2rem] " />
+        <img src={brandLogo} className="w-[9rem] h-[3rem] object-cover " />
 
         {/* Hamburger Button */}
         <div className="md:hidden">

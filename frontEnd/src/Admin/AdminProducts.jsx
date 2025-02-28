@@ -5,6 +5,7 @@ export const AdminProducts = () => {
 
   return (
     <div className="border h-full w-full p-[1rem]">
+      {/* div for the navigation links */}
       <div className="flex justify-between p-[1rem]">
         <ul className="flex gap-[3rem]">
           <li>
@@ -42,7 +43,7 @@ export const AdminProducts = () => {
           </li>
         </ul>
       </div>
-      <div className="border min-h-[100vh] w-full">
+      <div className=" min-h-[100vh] w-full p-[0.5rem]">
         <Outlet />
       </div>
     </div>

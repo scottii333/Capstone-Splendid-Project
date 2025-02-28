@@ -207,7 +207,7 @@ export const AdminAuth = () => {
         <img
           src={brandLogo}
           alt="Brand Logo"
-          className="w-40 h-12 object-contain"
+          className="w-40 h-22 object-cover"
         />
         {view === "login" && renderLoginForm()}
         {view === "createAccount" && renderCreateAccountForm()}
