@@ -4,7 +4,7 @@ export const AdminProducts = () => {
   const location = useLocation(); // Get the current route
 
   return (
-    <div className="border h-full w-full p-[1rem]">
+    <div className=" h-full w-full p-[1rem]">
       {/* div for the navigation links */}
       <div className="flex justify-between p-[1rem]">
         <ul className="flex gap-[3rem]">
