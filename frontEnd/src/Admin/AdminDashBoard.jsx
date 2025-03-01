@@ -96,7 +96,7 @@ export const AdminDashBoard = () => {
 
         {/* Dropdown Menu (visible when hamburger is toggled on small screens) */}
         {isOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white/90 backdrop-blur-3xl shadow-md flex flex-col items-center space-y-4 py-4 md:hidden">
+          <div className="z-[9999] absolute top-16 left-0 w-full bg-white/90 backdrop-blur-3xl shadow-md flex flex-col items-center space-y-4 py-4 md:hidden">
             <ul className="flex flex-col gap-[2rem] mt-[1rem] w-full text-center">
               <li>
                 <Link
