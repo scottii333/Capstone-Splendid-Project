@@ -4,7 +4,7 @@ import { useState } from "react";
 import dashBoardLogo from "../Images/dashboardLogo.png";
 import productsLogo from "../Images/productsLogo.png";
 import cartLogo from "../Images/cartLogo.png";
-import shippingLogo from "../Images/shippingLogo.png";
+// import shippingLogo from "../Images/shippingLogo.png";
 import messagesLogo from "../Images/messagesLogo.png";
 
 export const AdminDashBoard = () => {
@@ -44,7 +44,7 @@ export const AdminDashBoard = () => {
               <p>Orders</p>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/Admin-Dashboard-Splendid/Shipping"
               className="flex gap-[0.5rem] items-center justify-center p-[1rem] rounded-lg hover:[background-image:linear-gradient(to_right,_#e2dab4,_#fcc190)]"
@@ -52,14 +52,14 @@ export const AdminDashBoard = () => {
               <img src={shippingLogo} className="w-[2rem] h-[2rem]" />
               <p>Shipping</p>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/Admin-Dashboard-Splendid/Messages"
               className="flex gap-[0.5rem] items-center justify-center p-[1rem] rounded-lg hover:[background-image:linear-gradient(to_right,_#e2dab4,_#fcc190)]"
             >
               <img src={messagesLogo} className="w-[2rem] h-[2rem]" />
-              <p>Messages</p>
+              <p>Feedback</p>
             </Link>
           </li>
         </ul>
@@ -128,7 +128,7 @@ export const AdminDashBoard = () => {
                   <p>Orders</p>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/Admin-Dashboard-Splendid/Shipping"
                   onClick={() => setIsOpen(false)}
@@ -137,7 +137,7 @@ export const AdminDashBoard = () => {
                   <img src={shippingLogo} className="w-[2rem] h-[2rem]" />
                   <p>Shipping</p>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   to="/Admin-Dashboard-Splendid/Messages"
@@ -145,7 +145,7 @@ export const AdminDashBoard = () => {
                   className="flex gap-[0.5rem] items-center justify-center p-[1rem] rounded-lg hover:[background-image:linear-gradient(to_right,_#e2dab4,_#fcc190)]"
                 >
                   <img src={messagesLogo} className="w-[2rem] h-[2rem]" />
-                  <p>Messages</p>
+                  <p>Feedback</p>
                 </Link>
               </li>
             </ul>
