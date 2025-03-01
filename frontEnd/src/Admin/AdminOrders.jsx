@@ -196,10 +196,10 @@ export const AdminOrders = () => {
             <input
               type="text"
               placeholder="Enter Reference ID"
-              className="p-2 border rounded-md w-[8rem] md:w-[10rem]"
+              className="text-[0.8rem] p-2 border rounded-md w-[8rem] md:w-[8rem]"
             />
             <button className="bg-orange-400 text-white px-4 py-2 rounded-md">
-              Confirm Order
+              Send to courier
             </button>
           </div>
         </div>
