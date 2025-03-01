@@ -44,7 +44,7 @@ export const AdminOrders = () => {
   ];
 
   return (
-    <div className="bg-[#f8dfc6] min-h-screen p-6">
+    <div className=" min-h-screen p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">Orders</h1>
@@ -192,11 +192,11 @@ export const AdminOrders = () => {
           </div>
 
           {/* Confirm Order */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <input
               type="text"
               placeholder="Enter Reference ID"
-              className="p-2 border rounded-md flex-1"
+              className="p-2 border rounded-md w-[8rem] md:w-[10rem]"
             />
             <button className="bg-orange-400 text-white px-4 py-2 rounded-md">
               Confirm Order
