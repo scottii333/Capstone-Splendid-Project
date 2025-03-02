@@ -2,12 +2,16 @@
 
 import express from "express";
 import pool from "./config/pgDb.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+
+// Routes for the Email OTP
+app.use("/OTP-Sender", authRoutes);
 
 // Test Route to Check Database Connection
 app.get("/test-db", async (req, res) => {
