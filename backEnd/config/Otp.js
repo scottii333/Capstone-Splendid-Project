@@ -16,14 +16,29 @@ const generateEmailOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-export const sendEmailOTP = async (email) => {
+export const sendEmailOTP = async (email, type) => {
   const EmailOTP = generateEmailOTP();
 
+  // Determine OTP type text based on the type provided
+  let otpTypeText = "";
+  switch (type) {
+    case "login":
+      otpTypeText = "Login OTP";
+      break;
+    case "createAccount":
+      otpTypeText = "Account Creation OTP";
+      break;
+    case "forgotPassword":
+      otpTypeText = "Password Reset OTP";
+      break;
+    default:
+      otpTypeText = "OTP";
+  }
   // Email template with inline CSS
   const emailHTML = `
   <div style="background-color: #f4f4f4; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
     <div style="max-width: 500px; margin: auto; background: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
-      <h2 style="color: #333; margin-bottom: 10px;">🔐 Your OTP Code</h2>
+      <h2 style="color: #333; margin-bottom: 10px;">🔐 Your ${otpTypeText} Code</h2>
       <p style="color: #666; font-size: 16px;">Use the OTP below to complete your authentication. This code expires in <strong>10 minutes</strong>.</p>
       <div style="font-size: 24px; font-weight: bold; color: #4CAF50; padding: 10px; background: #f9f9f9; border-radius: 5px; display: inline-block; margin: 20px auto;">
         ${EmailOTP}
@@ -36,7 +51,7 @@ export const sendEmailOTP = async (email) => {
   const mailOptions = {
     from: `"Security Team" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: "Your OTP Code",
+    subject: `Your ${otpTypeText}`,
     html: emailHTML, // Sending HTML email with inline styles
   };
 
@@ -46,7 +61,7 @@ export const sendEmailOTP = async (email) => {
 
     return { success: true, otp: EmailOTP };
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error sending email:", error.message, error.stack);
     return { success: false, error: error.message };
   }
 };
