@@ -31,7 +31,7 @@ export const AdminAuth = () => {
     setLoginEmail("");
     setLoginOTP("");
     setLoginPassword("");
-    setLoginOtpTimer(0);
+    // setLoginOtpTimer(0);
   };
 
   const resetCreateFields = () => {
@@ -40,14 +40,14 @@ export const AdminAuth = () => {
     setCreateEmail("");
     setCreateOTP("");
     setCreatePassword("");
-    setCreateOtpTimer(0);
+    // setCreateOtpTimer(0);
   };
 
   const resetForgotFields = () => {
     setForgotEmail("");
     setForgotOTP("");
     setNewPassword("");
-    setForgotOtpTimer(0);
+    // setForgotOtpTimer(0);
   };
 
   // Utility function to validate that the email is a Gmail address
@@ -56,7 +56,7 @@ export const AdminAuth = () => {
 
   // Helper to start a 30-second OTP timer
   const startOtpTimer = (setTimer) => {
-    setTimer(30);
+    setTimer(180);
     const intervalId = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 1) {
