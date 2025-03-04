@@ -1,7 +1,9 @@
 import pool from "../config/pgDb.js";
 import { insertProduct } from "../models/productAdminModel.js";
+import path from "path";
+import fs from "fs";
 
-// Create table if it doesn’t exist
+// Ensure product table exists
 const createProductTable = async () => {
   try {
     await pool.query(`
@@ -12,8 +14,8 @@ const createProductTable = async () => {
         description TEXT NOT NULL,
         price DECIMAL(10,2) NOT NULL CHECK (price >= 0),
         stock INT NOT NULL CHECK (stock >= 0),
-        product_image BYTEA NOT NULL,  -- Store image as binary
-        size_guide_image BYTEA NOT NULL,  -- Store image as binary
+        product_image TEXT NOT NULL,  
+        size_guide_image TEXT NOT NULL,  
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
@@ -22,6 +24,23 @@ const createProductTable = async () => {
     console.error("❌ Error creating table:", error.message);
     throw error;
   }
+};
+
+// Function to save uploaded images
+const saveFile = (file, folder = "uploads") => {
+  const uploadPath = path.join(process.cwd(), folder);
+  if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath, { recursive: true });
+
+  const fileName = `${Date.now()}_${file.name.replace(/\s/g, "_")}`;
+  const filePath = path.join(uploadPath, fileName);
+
+  file.mv(filePath, (err) => {
+    if (err) {
+      throw new Error(`Error saving file: ${err.message}`);
+    }
+  });
+
+  return `/uploads/${fileName}`; // Return relative path
 };
 
 // Add Product API
@@ -34,7 +53,6 @@ export const addProduct = async (req, res) => {
     const productImage = req.files?.productImage;
     const sizeGuideImage = req.files?.sizeGuideImage;
 
-    // Validate required fields
     if (
       !name ||
       !category ||
@@ -47,7 +65,6 @@ export const addProduct = async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    // Validate price & stock
     if (isNaN(price) || price <= 0) {
       return res
         .status(400)
@@ -59,10 +76,8 @@ export const addProduct = async (req, res) => {
         .json({ message: "Stock must be a non-negative number." });
     }
 
-    // Ensure table exists
     await createProductTable();
 
-    // Check if product name already exists
     const productExists = await pool.query(
       "SELECT id FROM SplendidHoodiesProducts WHERE name = $1",
       [name]
@@ -73,19 +88,19 @@ export const addProduct = async (req, res) => {
         .json({ message: "Product name already exists. Choose another name." });
     }
 
-    // Convert images to binary (buffer)
-    const productImageBuffer = productImage.data;
-    const sizeGuideImageBuffer = sizeGuideImage.data;
+    // Save images and get file paths
+    const productImagePath = saveFile(productImage);
+    const sizeGuideImagePath = saveFile(sizeGuideImage);
 
-    // Insert into Database
+    // Insert into database
     const newProduct = await insertProduct({
       name,
       category,
       description,
       price,
       stock,
-      product_image: productImageBuffer,
-      size_guide_image: sizeGuideImageBuffer,
+      product_image: productImagePath,
+      size_guide_image: sizeGuideImagePath,
     });
 
     return res

@@ -13,7 +13,8 @@ export const insertProduct = async (productData) => {
 
   try {
     const result = await pool.query(
-      `INSERT INTO SplendidHoodiesProducts (name, category, description, price, stock, product_image, size_guide_image) 
+      `INSERT INTO SplendidHoodiesProducts 
+       (name, category, description, price, stock, product_image, size_guide_image) 
        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
       [
         name,
