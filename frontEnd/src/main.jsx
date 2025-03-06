@@ -20,6 +20,7 @@ import { AdminViewProd } from "./Admin/AdminViewProd.jsx";
 import { AdminPrevProd } from "./Admin/AdminPrevProd.jsx";
 
 const router = createBrowserRouter([
+  // This is the Main Landing Page Routes
   {
     path: "/",
     element: <App />,
@@ -32,11 +33,15 @@ const router = createBrowserRouter([
       { path: "Contact-Splendid", element: <Contact /> },
     ],
   },
+
+  // This is the Admin Auth Page Routes
   {
     path: "/Admin-Authentication-Splendid",
     element: <AdminAuth />,
     errorElement: <Error />,
   },
+
+  // This is the Admin Dashboard Page Routes
   {
     path: "/Admin-Dashboard-Splendid",
     element: <AdminDashBoard />,

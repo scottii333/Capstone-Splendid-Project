@@ -56,7 +56,7 @@ export const AdminAuth = () => {
 
   // Helper to start a 30-second OTP timer
   const startOtpTimer = (setTimer) => {
-    setTimer(180);
+    setTimer(5);
     const intervalId = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 1) {
