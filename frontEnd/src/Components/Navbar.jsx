@@ -5,7 +5,7 @@ import accountLogo from "../Images/accLogo.png";
 
 export const Navbar = () => {
   return (
-    <nav className="w-full h-full bg-[#c4af75]  flex justify-around items-center p-[1rem] rounded-lg  ">
+    <nav className="w-full h-full bg-[#c4af75] flex justify-around items-center p-[1rem] rounded-lg ">
       {/* Default view */}
 
       <div>
