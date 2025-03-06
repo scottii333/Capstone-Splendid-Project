@@ -1,5 +1,6 @@
 import pool from "../config/pgDb.js";
 
+// Function to insert a new product into the database table named SplendidHoodiesProducts
 export const insertProduct = async (productData) => {
   const {
     name,
@@ -30,6 +31,19 @@ export const insertProduct = async (productData) => {
     return result.rows[0];
   } catch (error) {
     console.error("❌ Error inserting product:", error.message);
+    throw error;
+  }
+};
+
+// Function to get all products from the database table named SplendidHoodiesProducts
+export const getSplendidHoodiesProducts = async () => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM SplendidHoodiesProducts ORDER BY id DESC"
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("❌ Error getting products:", error.message);
     throw error;
   }
 };

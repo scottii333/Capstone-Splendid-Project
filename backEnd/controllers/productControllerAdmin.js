@@ -1,5 +1,8 @@
 import pool from "../config/pgDb.js";
-import { insertProduct } from "../models/productAdminModel.js";
+import {
+  insertProduct,
+  getSplendidHoodiesProducts,
+} from "../models/productAdminModel.js";
 import path from "path";
 import fs from "fs";
 
@@ -108,6 +111,17 @@ export const addProduct = async (req, res) => {
       .json({ message: "Product added successfully!", product: newProduct });
   } catch (error) {
     console.error("❌ Error adding product:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+// Fetch All Products API
+export const fetchSplendidHoodiesProducts = async (req, res) => {
+  try {
+    const products = await getSplendidHoodiesProducts();
+    return res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.error("❌ Error fetching products:", error);
     return res.status(500).json({ message: "Internal server error." });
   }
 };
