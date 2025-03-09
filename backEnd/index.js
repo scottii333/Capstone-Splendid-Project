@@ -1,6 +1,7 @@
 import express from "express";
 import adminAuthRoutes from "./routes/authRoutesAdmin.js";
 import newProductRoutes from "./routes/newProductRoutesAdmin.js";
+import publishProductRoutes from "./routes/publishedProductRoutes.js";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import path from "path";
@@ -33,6 +34,7 @@ app.use("/uploads", express.static(uploadDir)); // Serve images
 // Routes
 app.use("/api/admin", adminAuthRoutes);
 app.use("/api/newProduct", newProductRoutes);
+app.use("/api/publishedProduct", publishProductRoutes);
 
 // Start the server
 const port = process.env.PORT || 3000;
