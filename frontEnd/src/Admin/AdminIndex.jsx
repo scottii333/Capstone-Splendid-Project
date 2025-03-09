@@ -71,7 +71,7 @@ export const AdminIndex = () => {
 
       {/* Div for Top Selling Products/ Pending and Deliver Status */}
       <div className=" flex justify-center gap-2 flex-wrap ">
-        <div className="bg-white w-[20rem] h-[20rem] rounded-lg p-[1rem] text-center sm:flex sm:flex-col gap-2 shadow-lg  ">
+        <div className="bg-white w-full sm:w-[20rem] h-[20rem] rounded-lg p-[1rem] text-center sm:flex sm:flex-col gap-2 shadow-lg  ">
           <h2 className="text-[1.2rem] ">Top Selling Products ⭐⭐⭐ </h2>
 
           <div className=" overflow-y-scroll scrollbar-hidden  flex flex-col gap-2 p-2 h-[15rem]">
@@ -97,13 +97,13 @@ export const AdminIndex = () => {
           </div>
         </div>
 
-        <div className="bg-white w-[20rem] h-[20rem] rounded-lg p-[1rem] text-center flex flex-col gap-2 shadow-lg">
+        <div className="bg-white w-full sm:w-[20rem] h-[20rem] rounded-lg p-[1rem] text-center flex flex-col gap-2 shadow-lg">
           <h2 className="text-[1.2rem] ">Pending Orders🛒</h2>
           <div className=" h-full"></div>
           <button className="text-right cursor-pointer ">View All</button>
         </div>
 
-        <div className="bg-white w-[20rem] h-[20rem] rounded-lg p-[1rem] text-center flex flex-col gap-2 shadow-lg ">
+        <div className="bg-white w-full sm:w-[20rem] h-[20rem] rounded-lg p-[1rem] text-center flex flex-col gap-2 shadow-lg ">
           <h2 className="text-[1.2rem] ">Delivered Orders🚚</h2>
           <div className=" flex gap-5 p-[2rem] justify-center flex-wrap ">
             <div>
@@ -139,7 +139,7 @@ export const AdminIndex = () => {
           <SalesBarChart />
         </div>
         {/* Transaction History */}
-        <div className="bg-white w-[20rem] md:w-[30rem] h-[25rem] rounded-lg p-[1rem] text-center flex flex-col gap-2  shadow-lg ">
+        <div className="bg-white w-full sm:w-[20rem] md:w-[30rem] h-[25rem] rounded-lg p-[1rem] text-center flex flex-col gap-2  shadow-lg ">
           <h2 className="text-[1.2rem] ">Transaction History📜 </h2>
           <div className="p-2 overflow-y-scroll scrollbar-hidden flex flex-col gap-2 items-center justify-center h-[15rem]">
             <div className="flex gap-5 items-center justify-center w-auto">
