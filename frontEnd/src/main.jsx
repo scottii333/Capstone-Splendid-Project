@@ -3,9 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { App } from "./App.jsx";
 import { Home } from "./Pages/Home.jsx";
-import { Contact } from "./Pages/Contact.jsx";
-import { About } from "./Pages/About.jsx";
-import { Products } from "./Pages/Products.jsx";
+import { Journey } from "./Pages/Journey.jsx";
+import { Showroom } from "./Pages/Showroom.jsx";
+import { Collections } from "./Pages/Collections.jsx";
 import { Error } from "./Components/Error.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AdminAuth } from "./Admin/AdminAuth.jsx";
@@ -28,9 +28,9 @@ const router = createBrowserRouter([
 
     children: [
       { index: true, element: <Home /> },
-      { path: "Product-Splendid", element: <Products /> },
-      { path: "About-Splendid", element: <About /> },
-      { path: "Contact-Splendid", element: <Contact /> },
+      { path: "Collections-Splendid", element: <Collections /> },
+      { path: "Showroom-Splendid", element: <Showroom /> },
+      { path: "Journey-Splendid", element: <Journey /> },
     ],
   },
 
