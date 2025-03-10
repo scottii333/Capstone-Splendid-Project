@@ -3,7 +3,7 @@ import cartLogo from "../Images/cartLogo.png";
 import mainLogo from "../Images/brandLogo.png";
 import accountLogo from "../Images/accLogo.png";
 import closeLogo from "../Images/closeBtn.png";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import sampleProductImg from "../Images/HoodieProd.png";
 import sampleIcon from "../Images/accLogo.png";
 
@@ -15,7 +15,7 @@ export const Navbar = () => {
   const [isDesktopAccOpen, setIsDesktopAccOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
-  const [isAutenticatedModalOpen, setIsAutenticatedModalOpen] = useState(true);
+  const [isAutenticatedModalOpen, setIsAutenticatedModalOpen] = useState(false);
 
   const closeAllModals = () => {
     setIsMobileAccOpen(false);
@@ -24,36 +24,23 @@ export const Navbar = () => {
     setIsDesktopAccOpen(false);
   };
 
-  // Close modals when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".modal")) {
-        closeAllModals();
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
     <nav className="w-full h-[4rem] rounded-t-lg bg-[#F6E0D2] shadow-xl flex justify-between items-center p-2">
-      <div className="w-[5rem]">
-        <img src={mainLogo} className="w-[100%]" />
+      <div className="w-[6rem]">
+        <Link>
+          <img src={mainLogo} className="w-[100%]" />
+        </Link>
       </div>
       {/* Component for Links in Desktop View */}
       <ul className="hidden sm:flex gap-4 p-2">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/Collections-Splendid">Collections</Link>
         </li>
         <li>
-          <Link to="/Product-Splendid">Greeting</Link>
+          <Link to="/Showroom-Splendid">Showroom</Link>
         </li>
         <li>
-          <Link to="/About-Splendid">About</Link>
-        </li>
-        <li>
-          <Link to="/Contact-Splendid">Contact</Link>
+          <Link to="/Journey-Splendid">Our Journey</Link>
         </li>
       </ul>
       {/* Component for Cart and Login Button in Desktop View */}
@@ -308,6 +295,7 @@ export const Navbar = () => {
           </div>
         </div>
       </div>
+
       {/* Component for Design in Mobile View */}
       <div className=" sm:hidden ">
         {/* Hamburger Button */}
@@ -318,26 +306,30 @@ export const Navbar = () => {
               className="w-[1.5rem] h-[1.5rem] cursor-pointer"
               onClick={() => {
                 closeAllModals();
+                setIsHamburgerOpen(false);
                 setIsMobileCartOpen(!isMobileCartOpen);
               }}
             />
           </button>
           <button
-            className="flex flex-col justify-between w-8 h-6 cursor-pointer focus:outline-none"
-            onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
+            className="flex flex-col justify-between w-6 h-5 cursor-pointer focus:outline-none"
+            onClick={() => {
+              closeAllModals();
+              setIsHamburgerOpen(!isHamburgerOpen);
+            }}
           >
             <span
-              className={`block h-1 w-full bg-black rounded transition-transform duration-300 ${
-                isHamburgerOpen ? "rotate-45 translate-y-2.5" : ""
+              className={`block h-0.5 w-full bg-black rounded transition-transform duration-300 ${
+                isHamburgerOpen ? "rotate-45 translate-y-2" : ""
               }`}
             ></span>
             <span
-              className={`block h-1 w-full bg-black rounded transition-opacity duration-300 ${
+              className={`block h-0.5 w-full bg-black rounded transition-opacity duration-300 ${
                 isHamburgerOpen ? "opacity-0" : "opacity-100"
               }`}
             ></span>
             <span
-              className={`block h-1 w-full bg-black rounded transition-transform duration-300 ${
+              className={`block h-0.5 w-full bg-black rounded transition-transform duration-300 ${
                 isHamburgerOpen ? "-rotate-45 -translate-y-2.5" : ""
               }`}
             ></span>
@@ -386,12 +378,13 @@ export const Navbar = () => {
             </li>
           </ul>
           <div className="flex justify-center mt-4">
-            <button>
+            <button className="cursor-pointer">
               <img
                 src={accountLogo}
                 className="w-[2rem] h-[2rem]"
                 onClick={() => {
                   closeAllModals();
+                  setIsHamburgerOpen(false);
                   setIsMobileAccOpen(!isMobileAccOpen);
                 }}
               />
@@ -685,6 +678,9 @@ export const Navbar = () => {
               </li>
             </ul>
           </div>
+          <button className="w-full cursor-pointer hover:text-red-400">
+            Sign Out
+          </button>
         </div>
       </div>
     </nav>
