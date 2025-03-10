@@ -27,7 +27,7 @@ export const Navbar = () => {
   return (
     <nav className="w-full h-[4rem] rounded-t-lg bg-[#F6E0D2] shadow-xl flex justify-between items-center p-2">
       <div className="w-[6rem]">
-        <Link>
+        <Link to="/">
           <img src={mainLogo} className="w-[100%]" />
         </Link>
       </div>
@@ -298,7 +298,7 @@ export const Navbar = () => {
 
       {/* Component for Design in Mobile View */}
       <div className=" sm:hidden ">
-        {/* Hamburger Button */}
+        {/* Hamburger Button and Cart Button */}
         <div className="flex justify-between items-center gap-5 p-2">
           <button>
             <img
@@ -348,32 +348,27 @@ export const Navbar = () => {
         >
           <ul className="flex flex-col gap-4  w-full  text-center">
             <li>
-              <Link onClick={() => setIsHamburgerOpen(false)} to="/">
-                Home
+              <Link
+                onClick={() => setIsHamburgerOpen(false)}
+                to="/Collections-Splendid"
+              >
+                Collections
               </Link>
             </li>
             <li>
               <Link
                 onClick={() => setIsHamburgerOpen(false)}
-                to="/Product-Splendid"
+                to="/Showroom-Splendid"
               >
-                Greeting
+                Showroom
               </Link>
             </li>
             <li>
               <Link
                 onClick={() => setIsHamburgerOpen(false)}
-                to="/About-Splendid"
+                to="/Journey-Splendid"
               >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link
-                onClick={() => setIsHamburgerOpen(false)}
-                to="/Contact-Splendid"
-              >
-                Contact
+                Our Journey
               </Link>
             </li>
           </ul>
