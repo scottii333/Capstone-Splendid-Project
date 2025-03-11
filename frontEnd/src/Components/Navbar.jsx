@@ -56,8 +56,10 @@ export const Navbar = () => {
 
         {/* Modal for Cart Desktop View */}
         <div
-          className={`bg-white h-[auto] w-[20rem] absolute top-full right-15 shadow-lg border rounded-lg mt-2  ${
-            isDesktopCartOpen ? "block z-50" : "hidden"
+          className={`bg-white h-[auto] w-[20rem] absolute top-full right-15 shadow-lg border rounded-lg mt-2 transition-all duration-600 ease-in-out transform  ${
+            isDesktopCartOpen
+              ? "opacity-100 scale-100 visible z-50"
+              : "opacity-0 scale-95 invinsible"
           }`}
         >
           <div className="flex flex-col p-1 gap-2 items-center h-full m-[1rem]">
@@ -149,8 +151,10 @@ export const Navbar = () => {
 
         {/* Modal for Account Desktop View */}
         <div
-          className={`bg-white border  shadow-lg rounded-lg absolute top-full right-0 w-[25rem] mt-2 ${
-            isDesktopAccOpen ? "block z-30" : "hidden"
+          className={`bg-white border  shadow-lg rounded-lg absolute top-full right-0 w-[25rem] mt-2 transition-all duration-600 ease-in-out transform ${
+            isDesktopAccOpen
+              ? "opacity-100 scale-100 visible z-30"
+              : "opacity-0 scale-95 invisible"
           }`}
         >
           <div className="flex flex-col p-1 gap-2 items-center h-full m-[1rem]">
@@ -389,8 +393,10 @@ export const Navbar = () => {
       </div>
       {/* Component for Cart Modal in Mobile View */}
       <div
-        className={`bg-white h-[auto] w-[20rem] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg border rounded-lg sm:invisible ${
-          isMobileCartOpen ? "visible" : "invisible"
+        className={`bg-white h-[auto] w-[20rem] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg border rounded-lg sm:invisible transition-all duration-500 ease-in-out transform ${
+          isMobileCartOpen
+            ? "opacity-100 scale-100 visible"
+            : "opacity-0 scale-95 invisible"
         }`}
       >
         <div className="flex flex-col p-1 gap-2 items-center h-full m-[1rem]">
@@ -473,8 +479,10 @@ export const Navbar = () => {
 
       {/* Component for Account Modal in Mobile View If not Autententicated */}
       <div
-        className={`bg-[#F6E0D2] border fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg rounded-lg sm:invisible ${
-          isMobileAccOpen ? "visible" : "invisible"
+        className={`bg-[#F6E0D2] border fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg rounded-lg sm:invisible transition-all duration-600 ease-in-out transform ${
+          isMobileAccOpen
+            ? "opacity-100 scale-100 visible"
+            : "opacity-0 scale-95 invisible"
         }`}
       >
         <div className="flex flex-col p-1 gap-2 items-center h-full m-[1rem]">
