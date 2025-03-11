@@ -18,6 +18,9 @@ import { AdminMessages } from "./Admin/AdminMessages.jsx";
 import { AdminNewProd } from "./Admin/AdminNewProd.jsx";
 import { AdminViewProd } from "./Admin/AdminViewProd.jsx";
 import { AdminPrevProd } from "./Admin/AdminPrevProd.jsx";
+import { AllProduct } from "./Components/AllProduct.jsx";
+import { NewArrivals } from "./Components/NewArrivals.jsx";
+import { TopChoice } from "./Components/TopChoice.jsx";
 
 const router = createBrowserRouter([
   // This is the Main Landing Page Routes
@@ -28,7 +31,24 @@ const router = createBrowserRouter([
 
     children: [
       { index: true, element: <Home /> },
-      { path: "Collections-Splendid", element: <Collections /> },
+      {
+        path: "Collections-Splendid",
+        element: <Collections />,
+        children: [
+          {
+            index: true,
+            element: <AllProduct />,
+          },
+          {
+            path: "New-Arrivals",
+            element: <NewArrivals />,
+          },
+          {
+            path: "Top-Choice",
+            element: <TopChoice />,
+          },
+        ],
+      },
       { path: "Showroom-Splendid", element: <Showroom /> },
       { path: "Journey-Splendid", element: <Journey /> },
     ],
