@@ -80,7 +80,7 @@ export const Navbar = () => {
                     Splendid Oversized Hoodie
                   </p>
                   <p className="text-[10px] flex items-center gap-10">
-                    Color:<p> Ivory</p>
+                    Color:<span> Ivory</span>
                   </p>
                   <p className="text-[10px] flex items-center gap-5">
                     Quantity:
@@ -92,7 +92,7 @@ export const Navbar = () => {
                     />
                   </p>
                   <p className="text-[10px] flex items-center gap-9">
-                    Total: <p>PHP 1,500</p>{" "}
+                    Total: <span>PHP 1,500</span>{" "}
                   </p>
                   <button className="cursor-pointer bg-red-400 p-1 text-[9px] rounded-lg hover:bg-red-500 transition hover:text-white ">
                     Remove
@@ -107,7 +107,7 @@ export const Navbar = () => {
                     Splendid Oversized Hoodie
                   </p>
                   <p className="text-[10px] flex items-center gap-10">
-                    Color:<p> Ivory</p>
+                    Color:<span> Ivory</span>
                   </p>
                   <p className="text-[10px] flex items-center gap-5">
                     Quantity:
@@ -119,7 +119,7 @@ export const Navbar = () => {
                     />
                   </p>
                   <p className="text-[10px] flex items-center gap-9">
-                    Total: <p>PHP 1,500</p>{" "}
+                    Total: <span>PHP 1,500</span>{" "}
                   </p>
                   <button className="cursor-pointer bg-red-400 p-1 text-[9px] rounded-lg hover:bg-red-500 transition hover:text-white ">
                     Remove
@@ -417,7 +417,7 @@ export const Navbar = () => {
                   Splendid Oversized Hoodie
                 </p>
                 <p className="text-[10px] flex items-center gap-10">
-                  Color:<p> Ivory</p>
+                  Color:<span> Ivory</span>
                 </p>
                 <p className="text-[10px] flex items-center gap-5">
                   Quantity:
@@ -429,7 +429,7 @@ export const Navbar = () => {
                   />
                 </p>
                 <p className="text-[10px] flex items-center gap-9">
-                  Total: <p>PHP 1,500</p>{" "}
+                  Total: <span>PHP 1,500</span>{" "}
                 </p>
                 <button className="cursor-pointer bg-red-400 p-1 text-[9px] rounded-lg hover:bg-red-500 transition hover:text-white ">
                   Remove
@@ -444,7 +444,7 @@ export const Navbar = () => {
                   Splendid Oversized Hoodie
                 </p>
                 <p className="text-[10px] flex items-center gap-10">
-                  Color:<p> Ivory</p>
+                  Color:<span> Ivory</span>
                 </p>
                 <p className="text-[10px] flex items-center gap-5">
                   Quantity:
@@ -456,7 +456,7 @@ export const Navbar = () => {
                   />
                 </p>
                 <p className="text-[10px] flex items-center gap-9">
-                  Total: <p>PHP 1,500</p>{" "}
+                  Total: <span>PHP 1,500</span>{" "}
                 </p>
                 <button className="cursor-pointer bg-red-400 p-1 text-[9px] rounded-lg hover:bg-red-500 transition hover:text-white ">
                   Remove
