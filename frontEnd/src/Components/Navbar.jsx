@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 
 import cartLogo from "../Images/cartLogo.png";
@@ -138,11 +138,43 @@ export const Navbar = () => {
     }
   }, [resetTimer]);
 
+  // Handle user logout
+  const handleLogout = useCallback(async () => {
+    try {
+      await axios.post(
+        "http://localhost:3000/api/customer/logout",
+        {},
+        { withCredentials: true }
+      );
+      setIsAuthenticated(false);
+      setIsAutenticatedModalOpen(false);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  }, []);
+
   /* --------------------------------------------------------------------------
      SESSION TIMER FUNCTIONS (INACTIVITY & WARNING)
   -------------------------------------------------------------------------- */
-  // Start the inactivity timer (only for authenticated users)
-  const startInactivityTimer = () => {
+  // Memoized function to start the warning timer after the inactivity timer expires
+  const startWarningTimer = useCallback(() => {
+    setShowSessionWarning(true);
+    setWarningTimer(10);
+    if (warningIntervalRef.current) clearInterval(warningIntervalRef.current);
+    warningIntervalRef.current = setInterval(() => {
+      setWarningTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(warningIntervalRef.current);
+          handleLogout(); // Auto logout if no action
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [handleLogout]);
+
+  // Memoized function to start the inactivity timer (only for authenticated users)
+  const startInactivityTimer = useCallback(() => {
     setShowSessionWarning(false);
     setSessionTimer(20);
     if (inactivityIntervalRef.current)
@@ -157,44 +189,29 @@ export const Navbar = () => {
         return prev - 1;
       });
     }, 1000);
-  };
+  }, [startWarningTimer]);
 
-  // Start the warning timer after inactivity timer expires
+  // Memoized function to reset both timers; a "forced" reset overrides any warning state
+  const resetTimers = useCallback(
+    (forced = false) => {
+      // If not forced and warning is active, do nothing.
+      if (!forced && warningActiveRef.current) return;
+      if (warningIntervalRef.current) clearInterval(warningIntervalRef.current);
+      if (inactivityIntervalRef.current)
+        clearInterval(inactivityIntervalRef.current);
+      setShowSessionWarning(false);
+      startInactivityTimer();
+    },
+    [startInactivityTimer]
+  );
 
-  const startWarningTimer = () => {
-    setShowSessionWarning(true);
-    setWarningTimer(10);
-    if (warningIntervalRef.current) clearInterval(warningIntervalRef.current);
-    warningIntervalRef.current = setInterval(() => {
-      setWarningTimer((prev) => {
-        if (prev <= 1) {
-          clearInterval(warningIntervalRef.current);
-          handleLogout(); // Auto logout if no action
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  // Reset both timers; a "forced" reset overrides any warning state
-  const resetTimers = (forced = false) => {
-    // If not forced and warning is active, do nothing.
-    if (!forced && warningActiveRef.current) return;
-    if (warningIntervalRef.current) clearInterval(warningIntervalRef.current);
-    if (inactivityIntervalRef.current)
-      clearInterval(inactivityIntervalRef.current);
-    setShowSessionWarning(false);
-    startInactivityTimer();
-  };
-
-  // Handle user activity events to reset the inactivity timer
-  const handleUserActivity = () => {
+  // Memoized function to handle user activity events (resets the inactivity timer)
+  const handleUserActivity = useCallback(() => {
     // Only reset timers if no warning is showing.
     if (!warningActiveRef.current) {
       resetTimers();
     }
-  };
+  }, [resetTimers]);
 
   // Attach event listeners when authenticated and clean up on unmount
   useEffect(() => {
@@ -209,8 +226,7 @@ export const Navbar = () => {
       clearInterval(inactivityIntervalRef.current);
       clearInterval(warningIntervalRef.current);
     };
-  }, [isAuthenticated]);
-
+  }, [isAuthenticated, handleUserActivity, startInactivityTimer]);
   /* --------------------------------------------------------------------------
      FORM HANDLERS & OTP REQUESTS
   -------------------------------------------------------------------------- */
@@ -299,21 +315,6 @@ export const Navbar = () => {
       setUserData(userRes.data.user);
     } catch (error) {
       alert(error.response?.data?.error || "Error logging in");
-    }
-  };
-
-  // Handle user logout
-  const handleLogout = async () => {
-    try {
-      await axios.post(
-        "http://localhost:3000/api/customer/logout",
-        {},
-        { withCredentials: true }
-      );
-      setIsAuthenticated(false);
-      setIsAutenticatedModalOpen(false);
-    } catch (error) {
-      console.error("Logout failed:", error);
     }
   };
 
