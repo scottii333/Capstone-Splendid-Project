@@ -79,6 +79,14 @@ export const addProduct = async (req, res) => {
         .json({ message: "Stock must be a non-negative number." });
     }
 
+    // Check description word count and alert if it exceeds 20 words
+    const wordCount = description.split(/\s+/).filter(Boolean).length;
+    if (wordCount > 50) {
+      return res
+        .status(400)
+        .json({ message: "Product description must not exceed 20 words." });
+    }
+
     await createProductTable();
 
     const productExists = await pool.query(

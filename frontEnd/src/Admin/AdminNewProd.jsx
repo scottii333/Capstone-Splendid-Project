@@ -120,8 +120,8 @@ export const AdminNewProd = () => {
               <option value="" disabled>
                 Select Category
               </option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="pull-over">Pull-Over Hoodies</option>
+              <option value="zip">Zip Hoodie</option>
             </select>
           </div>
         </div>
