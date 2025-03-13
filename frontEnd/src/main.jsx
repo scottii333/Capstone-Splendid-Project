@@ -21,6 +21,7 @@ import { AdminPrevProd } from "./Admin/AdminPrevProd.jsx";
 import { AllProduct } from "./Components/AllProduct.jsx";
 import { NewArrivals } from "./Components/NewArrivals.jsx";
 import { TopChoice } from "./Components/TopChoice.jsx";
+import { AuthProvider } from "./context/authProvider.jsx";
 
 const router = createBrowserRouter([
   // This is the Main Landing Page Routes
@@ -105,6 +106,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 );

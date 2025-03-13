@@ -40,10 +40,18 @@ const generateTokens = (user) => {
 router.post("/login", async (req, res) => {
   const { email, password, otp } = req.body;
 
-  if (!email || (!password && !otp)) {
+  // Validate that email is provided and is a valid Gmail address.
+  if (!email || !email.toLowerCase().endsWith("@gmail.com")) {
     return res
       .status(400)
-      .json({ error: "Email and either password or OTP are required." });
+      .json({ error: "A valid Gmail address is required." });
+  }
+
+  // Validate that at least one credential (password or OTP) is provided.
+  if (!password && !otp) {
+    return res
+      .status(400)
+      .json({ error: "Either password or OTP is required." });
   }
 
   try {
@@ -51,50 +59,111 @@ router.post("/login", async (req, res) => {
       "SELECT * FROM SplendidHoodiesCustomer WHERE email = $1",
       [email]
     );
-    if (userResult.rows.length === 0)
+    if (userResult.rows.length === 0) {
       return res.status(400).json({ error: "User not found." });
+    }
 
     const user = userResult.rows[0];
 
-    // OTP Login
-    if (otp) {
+    // If both OTP and password are provided, validate both:
+    if (otp && password) {
+      // Validate OTP first
       const storedOtpData = otpStore.get(email);
       if (
         !storedOtpData ||
         storedOtpData.type !== "login" ||
-        storedOtpData.otp !== otp ||
         Date.now() > storedOtpData.expiresAt
       ) {
         otpStore.delete(email);
-        return res.status(400).json({ error: "Invalid or expired OTP." });
+        return res
+          .status(400)
+          .json({ error: "Invalid or expired OTP. Please request a new OTP." });
+      }
+      if (storedOtpData.otp !== otp) {
+        storedOtpData.attempts = (storedOtpData.attempts || 0) + 1;
+        otpStore.set(email, storedOtpData);
+        if (storedOtpData.attempts >= 5) {
+          otpStore.delete(email);
+          return res.status(400).json({
+            error: "Maximum OTP attempts exceeded. Please request a new OTP.",
+          });
+        }
+        return res
+          .status(400)
+          .json({ error: "Invalid OTP. Please try again." });
+      }
+
+      // Validate password using bcrypt
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (!validPassword) {
+        return res.status(400).json({ error: "Invalid password." });
+      }
+
+      // Both OTP and password are valid; clear OTP from the store.
+      otpStore.delete(email);
+    }
+    // If only OTP is provided:
+    else if (otp) {
+      const storedOtpData = otpStore.get(email);
+      if (
+        !storedOtpData ||
+        storedOtpData.type !== "login" ||
+        Date.now() > storedOtpData.expiresAt
+      ) {
+        otpStore.delete(email);
+        return res
+          .status(400)
+          .json({ error: "Invalid or expired OTP. Please request a new OTP." });
+      }
+      if (storedOtpData.otp !== otp) {
+        storedOtpData.attempts = (storedOtpData.attempts || 0) + 1;
+        otpStore.set(email, storedOtpData);
+        if (storedOtpData.attempts >= 3) {
+          otpStore.delete(email);
+          return res.status(400).json({
+            error: "Maximum OTP attempts exceeded. Please request a new OTP.",
+          });
+        }
+        return res
+          .status(400)
+          .json({ error: "Invalid OTP. Please try again." });
       }
       otpStore.delete(email);
     }
-    // Password Login
-    else {
+    // If only password is provided:
+    else if (password) {
       const validPassword = await bcrypt.compare(password, user.password);
-      if (!validPassword)
+      if (!validPassword) {
         return res.status(400).json({ error: "Invalid password." });
+      }
     }
 
     // Generate JWT Tokens
     const { accessToken, refreshToken } = generateTokens(user);
 
-    // Store Tokens in Cookies
+    // Store tokens in cookies
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: false,
-      maxAge: 10 * 60 * 1000,
-    }); // 10 mins
+      maxAge: 10 * 60 * 1000, // 10 minutes
+    });
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    }); // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
-    res.json({ success: true, message: "Login successful!" });
+    // Remove sensitive fields before sending user data
+    const { password: pwd, ...safeUser } = user;
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful!",
+      user: safeUser,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error in /login:", error.message, error.stack);
+    return res.status(500).json({ error: "Internal server error." });
   }
 });
 
@@ -281,6 +350,55 @@ router.post("/reset-password", async (req, res) => {
     res.json({ success: true, message: "Password reset successful!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/refresh-token", async (req, res) => {
+  try {
+    // Read the refresh token from cookies
+    const oldRefreshToken = req.cookies.refreshToken;
+    if (!oldRefreshToken) {
+      return res
+        .status(401)
+        .json({ error: "Refresh token not found. Please log in again." });
+    }
+
+    // Verify the refresh token using your secret key
+    const decoded = jwt.verify(oldRefreshToken, REFRESH_TOKEN_SECRET);
+
+    // Optionally, verify the user still exists in the database
+    const userResult = await pool.query(
+      "SELECT * FROM SplendidHoodiesCustomer WHERE id = $1",
+      [decoded.id]
+    );
+    if (userResult.rows.length === 0) {
+      return res
+        .status(401)
+        .json({ error: "User not found. Please log in again." });
+    }
+    const user = userResult.rows[0];
+
+    // Generate new tokens (access and refresh)
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
+
+    // Set new tokens in cookies
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // use true in production
+      sameSite: "lax",
+      maxAge: 10 * 60 * 1000, // 10 minutes
+    });
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return res.status(200).json({ success: true, message: "Session extended" });
+  } catch (error) {
+    console.error("Error refreshing token:", error.message, error.stack);
+    return res.status(401).json({ error: "Invalid or expired refresh token." });
   }
 });
 
