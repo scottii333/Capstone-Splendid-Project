@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import axios from "axios";
 
 import cartLogo from "../Images/cartLogo.png";
@@ -8,6 +8,8 @@ import accountLogo from "../Images/accLogo.png";
 import closeLogo from "../Images/closeBtn.png";
 import sampleProductImg from "../Images/HoodieProd.png";
 import sampleIcon from "../Images/accLogo.png";
+
+import { AuthContext } from "../context/authContext";
 
 export const Navbar = () => {
   /* --------------------------------------------------------------------------
@@ -22,11 +24,14 @@ export const Navbar = () => {
 
   // Authentication and user data
   const [isAutenticatedModalOpen, setIsAutenticatedModalOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(null);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [userData, setUserData] = useState(null);
+
+  const { isAuthenticated, userData, logout, setIsAuthenticated, setUserData } =
+    useContext(AuthContext);
 
   // Session timers for auto logout functionality
-  const [sessionTimer, setSessionTimer] = useState(20);
+  const [sessionTimer, setSessionTimer] = useState(10);
   const [warningTimer, setWarningTimer] = useState(10);
   const [showSessionWarning, setShowSessionWarning] = useState(false);
 
@@ -44,32 +49,32 @@ export const Navbar = () => {
      AUTHENTICATION CHECK
   -------------------------------------------------------------------------- */
 
-  useEffect(() => {
-    // Check Authentication and Fetch User Data
-    const checkAuth = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:3000/api/customer/check-auth",
-          {
-            withCredentials: true,
-          }
-        );
+  // useEffect(() => {
 
-        if (res.data.isAuthenticated) {
-          setIsAuthenticated(true);
-          setUserData(res.data.user); // ✅ Store user data in state
-        } else {
-          setIsAuthenticated(false);
-          setUserData(null);
-        }
-      } catch (error) {
-        console.error("Authentication check failed:", error);
-        setIsAuthenticated(false);
-        setUserData(null);
-      }
-    };
-    checkAuth();
-  }, []);
+  //   const checkAuth = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         "http://localhost:3000/api/customer/check-auth",
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
+
+  //       if (res.data.isAuthenticated) {
+  //         setIsAuthenticated(true);
+  //         setUserData(res.data.user);
+  //       } else {
+  //         setIsAuthenticated(false);
+  //         setUserData(null);
+  //       }
+  //     } catch (error) {
+  //       console.error("Authentication check failed:", error);
+  //       setIsAuthenticated(false);
+  //       setUserData(null);
+  //     }
+  //   };
+  //   checkAuth();
+  // }, []);
 
   // Close all modals at once
   const closeAllModals = () => {
@@ -138,20 +143,15 @@ export const Navbar = () => {
     }
   }, [resetTimer]);
 
-  // Handle user logout
+  // Handle logout (calls global logout from AuthContext)
   const handleLogout = useCallback(async () => {
     try {
-      await axios.post(
-        "http://localhost:3000/api/customer/logout",
-        {},
-        { withCredentials: true }
-      );
-      setIsAuthenticated(false);
+      await logout();
       setIsAutenticatedModalOpen(false);
     } catch (error) {
       console.error("Logout failed:", error);
     }
-  }, []);
+  }, [logout]);
 
   /* --------------------------------------------------------------------------
      SESSION TIMER FUNCTIONS (INACTIVITY & WARNING)
@@ -176,7 +176,7 @@ export const Navbar = () => {
   // Memoized function to start the inactivity timer (only for authenticated users)
   const startInactivityTimer = useCallback(() => {
     setShowSessionWarning(false);
-    setSessionTimer(20);
+    setSessionTimer(10);
     if (inactivityIntervalRef.current)
       clearInterval(inactivityIntervalRef.current);
     inactivityIntervalRef.current = setInterval(() => {
@@ -299,21 +299,22 @@ export const Navbar = () => {
         loginData,
         { withCredentials: true }
       );
-      alert(res.data.message);
-      setIsAuthenticated(true);
+
+      if (res.data.user) {
+        setIsAuthenticated(true);
+        setUserData(res.data.user);
+      }
+
+      console.log(res.data.message);
       setIsMobileAccOpen(false);
       setIsDesktopAccOpen(false);
-      setIsAutenticatedModalOpen(true);
+      setIsAutenticatedModalOpen(false);
 
-      // ✅ Fetch User Details after login
-      const userRes = await axios.get(
-        "http://localhost:3000/api/customer/check-auth",
-        {
-          withCredentials: true,
-        }
-      );
-      setUserData(userRes.data.user);
+      alert(res.data.message);
     } catch (error) {
+      // Log the full error response for debugging
+      console.error("Login error:", error.response);
+      // Alert the actual error message from the server if available
       alert(error.response?.data?.error || "Error logging in");
     }
   };
@@ -330,6 +331,22 @@ export const Navbar = () => {
       setIsMobileAccOpen(false);
     } catch (error) {
       alert(error.response?.data?.error || "Error resetting password");
+    }
+  };
+
+  const handleStayLoggedIn = async () => {
+    try {
+      // Call your refresh token endpoint
+      await axios.get("http://localhost:3000/api/customer/refresh-token", {
+        withCredentials: true,
+      });
+      // On success, hide the warning and reset your inactivity timer
+      setShowSessionWarning(false);
+      resetTimers(true);
+    } catch (error) {
+      console.error("Failed to refresh token:", error.response);
+      // If refresh fails, force logout
+      handleLogout();
     }
   };
 
@@ -1177,7 +1194,7 @@ export const Navbar = () => {
               {/* The Stay Logged In button forces a timer reset */}
               <button
                 className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-                onClick={() => resetTimers(true)}
+                onClick={handleStayLoggedIn}
               >
                 Stay Logged In
               </button>
