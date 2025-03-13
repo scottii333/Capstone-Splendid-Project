@@ -8,7 +8,7 @@ export const Collections = () => {
       </h1>
 
       <ul className="flex justify-around min-w-[20rem] p-2">
-        <li>
+        <li className="p-2">
           <NavLink
             to="/Collections-Splendid"
             end
@@ -19,7 +19,7 @@ export const Collections = () => {
             All
           </NavLink>
         </li>
-        <li>
+        <li className="p-2">
           <NavLink
             to="/Collections-Splendid/New-Arrivals"
             className={({ isActive }) =>
@@ -29,11 +29,13 @@ export const Collections = () => {
             New Arrivals
           </NavLink>
         </li>
-        <li>
+        <li className="p-2">
           <NavLink
             to="/Collections-Splendid/Top-Choice"
             className={({ isActive }) =>
-              `px-2 py-1 ${isActive ? "font-bold text-black" : "text-gray-600"}`
+              `px-2 py-1  ${
+                isActive ? "font-bold text-black" : "text-gray-600"
+              }`
             }
           >
             Top choice
